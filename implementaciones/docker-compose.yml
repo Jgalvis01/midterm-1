@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  mpi-master:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mpi-master
+    working_dir: /app
+    command: >
+      sh -c "
+      echo 'Esperando a que todos los nodos estén listos...' &&
+      sleep 5 &&
+      echo 'Ejecutando pruebas MPI...' &&
+      mpirun --allow-run-as-root -n 4 ./mpi_filterer damma.pgm damma_mpi_blur.pgm --f blur &&
+      echo 'Test 1 completado' &&
+      mpirun --allow-run-as-root -n 4 ./mpi_filterer damma.pgm damma_mpi_laplace.pgm --f laplace &&
+      echo 'Test 2 completado' &&
+      mpirun --allow-run-as-root -n 4 ./mpi_filterer sulfur.pgm sulfur_mpi_sharpen.pgm --f sharpen &&
+      echo 'Todas las pruebas MPI completadas'
+      "
+    networks:
+      - mpi-network
+
+  mpi-worker-1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mpi-worker-1
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - mpi-network
+
+  mpi-worker-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mpi-worker-2
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - mpi-network
+
+  mpi-worker-3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mpi-worker-3
+    working_dir: /app
+    command: sleep infinity
+    networks:
+      - mpi-network
+
+networks:
+  mpi-network:
+    driver: bridge
