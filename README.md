@@ -1,8 +1,7 @@
 # 🖼️ Procesador de Imágenes PPM/PGM con Programación Paralela
 
 **Parcial No. 1 - Programación Paralela**  
-**Universidad:** [Tu Universidad]  
-**Estudiante:** [Tu Nombre]  
+**Estudiante:** Julian Andres Galvis
 **Curso:** Programación Paralela  
 
 ## 📋 Descripción General
